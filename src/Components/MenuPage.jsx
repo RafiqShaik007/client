@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "../styles/menu.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from 'axios'
 
 const foodItems = [
@@ -105,8 +105,9 @@ const Menu = () => {
           <div className="header-right">
            
             <div className="cart-wrapper">
-              <i className="fas fa-shopping-bag cart-icon"></i>
-              <div className="cart-count">{cartCount}</div>
+              
+            {/* <i class="fa-solid fa-plus" style={{fontSize: '25px'}}></i> */}
+            <Link to="/add-food-item"><button id="btn-add-food">Add food item</button></Link>
             </div>
             <div className="profile-wrapper">
               <img 
