@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import {Link, useNavigate} from 'react-router-dom'
 import "../styles/login.css"
+import axios from 'axios'
+
 
 const LoginForm = () => {
     const [email, setEmail] = useState('');
@@ -10,14 +12,27 @@ const LoginForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+      
         console.log('Form submitted: ', email, password);
-        if(email === 'shaikrafiq8074@gmail.com' && password === 'shaik123'){
-            alert('Logged Successfully')
-            navigate('/menu')
-        }
-        else{
-            alert('User name or Password is Wrong')
-        }
+        axios.post('http://localhost:2323/api/user/login', {email, password})
+        .then((res)=>{
+            console.log(res)
+            
+            if((res.status === 200 || res.status === 201) && res.data.message === 'Login Successfull' ){
+                alert(res.data.message)
+                localStorage.setItem('user-name', res.data.data.fullname)
+                localStorage.setItem('user-email', res.data.data.email)
+                localStorage.setItem('user-role', res.data.data.role)
+
+                console.log('Navigate to Menu')
+                navigate("/menu")
+            }
+            else{
+                alert(res.data.message)
+            }
+        })
+
+       
     };
 
     const togglePasswordVisibility = () => {

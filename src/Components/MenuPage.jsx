@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "../styles/menu.css";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios'
 
 const foodItems = [
   {
@@ -39,6 +40,11 @@ const Menu = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredItems, setFilteredItems] = useState(foodItems);
+  const [filter, setFilter] = useState('all')
+
+  const [admin, setAdmin] = useState(localStorage.getItem('user-role'))
+
+  const categories = ["all", "Seafood", "Vegetarian", "Appetizers", "Poultry", "Soups"];
 
   let navigate = useNavigate()
 
@@ -54,15 +60,28 @@ const Menu = () => {
   }, []);
 
   useEffect(() => {
-    const filtered = foodItems.filter(item =>
-      item.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setFilteredItems(filtered);
-  }, [searchQuery]);
+    console.log('Food API called: ', `http://localhost:2323/api/food?filterQuery=${filter}&searchQuery=${searchQuery}`)
+    axios.get(`http://localhost:2323/api/food?filterQuery=${filter}&searchQuery=${searchQuery}`)
+    .then(function(res){
+      console.log(res)
+      setFilteredItems(res.data)
+    })
+    .catch(function(error){
+      console.log('Got some error while filtering data')
+    })
+  }, [searchQuery, filter]);
 
   const addToCart = () => {
     setCartCount(cartCount + 1);
   };
+
+
+  const logout = ()=>{
+    localStorage.removeItem('user-name')
+    localStorage.removeItem('user-email')
+    localStorage.removeItem('user-role')
+    navigate('/')
+  }
 
   return (
     <div id="MenuPage">
@@ -78,17 +97,7 @@ const Menu = () => {
         }}
       ></div>
 
-      {/* <header className="header">
-        <nav className="nav ">
-          <div className="logo">Mahadevi Ahara</div>
-          <div className="cart-wrapper">
-            <i className="fas fa-shopping-bag cart-icon"></i>
-            <div className="cart-count">{cartCount}</div>
-          </div>
-        </nav>
-      </header> */}
-
-      {/* ---------------------------- */}
+     
 
       <header className="header">
         <nav className="nav ">
@@ -104,7 +113,7 @@ const Menu = () => {
                 src="https://t3.ftcdn.net/jpg/02/99/04/20/360_F_299042079_vGBD7wIlSeNl7vOevWHiL93G4koMM967.jpg" 
                 alt="Profile" 
                 className="profile-pic" 
-                onClick={()=>{navigate('/')}}
+                onClick={logout}
               />
             </div>
           </div>
@@ -133,18 +142,15 @@ const Menu = () => {
         
 
         <div className="categories">
-          {[
-            "all",
-            "seafood",
-            "vegetarian",
-            "appetizers",
-            "poultry",
-            "soups",
-          ].map((category) => (
-            <a href={`/menu?category=${category}`} key={category}>
-              <button className="category-btn">{category.toUpperCase()}</button>
-            </a>
-          ))}
+        {categories.map((category) => (
+        <button
+          key={category}
+          className={`category-btn ${filter === category ? "active" : ""}`}
+          onClick={() => setFilter(category)}
+        >
+          {category.toUpperCase()}
+        </button>
+      ))}
         </div>
 
         
@@ -173,10 +179,12 @@ const Menu = () => {
                   <h3 className="item-title">{item.name}</h3>
                   <p className="item-description">{item.description}</p>
                   <div className="item-footer">
-                    <span className="item-price">${item.price.toFixed(2)}</span>
+                    <span className="item-price">${item.price}</span>
                     <button className="add-btn" onClick={addToCart}>
                       Add to Cart
                     </button>
+                    {admin === "owner" ? <button className="del-btn">Delete</button> : null}
+
                   </div>
                 </div>
               </div>
