@@ -83,6 +83,20 @@ const Menu = () => {
     navigate('/')
   }
 
+  const deleteFoodItem = (id)=>{
+    console.log('Delete this food item: ', id)
+    axios.delete(`http://localhost:2323/api/food/deleteFoodItem/${id}`)
+    .then(function(res){
+      if(res.data.message === 'deleted data successfully'){
+        window.location.reload()
+        navigate('/menu')
+      }
+      else{
+        alert('Got some error while deleting')
+      }
+    })
+  }
+
   return (
     <div id="MenuPage">
       <div
@@ -182,9 +196,9 @@ const Menu = () => {
                   <div className="item-footer">
                     <span className="item-price">${item.price}</span>
                     <button className="add-btn" onClick={addToCart}>
-                      Add to Cart
+                      Order
                     </button>
-                    {admin === "owner" ? <button className="del-btn">Delete</button> : null}
+                    {admin === "owner" ? <button className="del-btn" onClick={()=>{deleteFoodItem(item._id)}}>Delete</button> : null}
 
                   </div>
                 </div>
