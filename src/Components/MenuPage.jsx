@@ -115,7 +115,7 @@ const Menu = () => {
 
       <header className="header">
         <nav className="nav ">
-          <div className="logo">Mahadevi Ahara</div>
+          <div className="logo">Sahyadri SmartKitchen</div>
           <div className="header-right">
            
             <div className="cart-wrapper">
