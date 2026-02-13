@@ -198,7 +198,9 @@ const Menu = () => {
                     <button className="add-btn" onClick={addToCart}>
                       Order
                     </button>
-                    {admin === "owner" ? <button className="del-btn" onClick={()=>{deleteFoodItem(item._id)}}>Delete</button> : null}
+                    {/* {admin === "owner" ? */}
+                     <button className="del-btn" onClick={()=>{deleteFoodItem(item._id)}}>Delete</button>
+                      {/* : null} */}
 
                   </div>
                 </div>
