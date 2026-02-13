@@ -46,7 +46,7 @@ const LoginForm = () => {
             <div className="floating-food">🍕</div>
 
             <div className="auth-container">
-                <div className="logo">BCA Fresh</div>
+                <div className="logo">BCAQuickBite</div>
                 
                 <form className="auth-form" onSubmit={handleSubmit}>
                     <h2>Login</h2>
