@@ -41,7 +41,7 @@ const RegisterForm = () => {
   return (
     <div id="RegisterForm">
         <div className="auth-container">
-      <div className="logo">BCA Fresh</div>
+      <div className="logo">BCAQuickBite</div>
       <form className="auth-form" >
         <div className="input-group">
           <input type="text" id="fullname" placeholder=" " value={fullname} onChange={(e)=>{setFullname(e.target.value)}}  required />
