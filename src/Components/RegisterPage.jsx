@@ -21,13 +21,17 @@ const RegisterForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form submitted", fullname, email, password);
-    axios.post('http://localhost:2323/api/user/register', {fullname, email, password})
+    axios.post('http://localhost:8000/api/user/register', {fullname, email, password})
     .then(function(res){
       console.log(res)
       if(res.status === 201 || res.status === 200){
         console.log('Data is created successfully')
         alert('User is Registered Successfully')
         navigate('/login')
+      }
+      else if(res.status === 203){
+        alert("User Already Exist!")
+
       }
       else{
         alert('Failed to register... Try after some time')
